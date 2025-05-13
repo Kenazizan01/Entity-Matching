@@ -3,11 +3,18 @@ import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from torch.nn.functional import softmax
+import os
+from huggingface_hub import login
 
 st.set_page_config(page_title="Product Similarity Checker", layout="centered")
 
 st.title("🛍️ Product Similarity Prediction")
 st.write("Enter two product descriptions to check if they match.")
+
+# Access the token securely
+hf_token = st.secrets["HUGGINGFACE_TOKEN"]["token"]
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_token
+login(hf_token)
 
 # Load model and tokenizer (cached to avoid reloading every time)
 @st.cache_resource
